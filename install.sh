@@ -273,9 +273,9 @@ PRO_VENV() {
 
     chown -R www-data /var/www/html/ocserv_pannel/
 
-    echo www-data ALL = NOPASSWD: /usr/bin/ocpasswd >> /etc/sudoers
+    echo www-data ALL = NOPASSWD: /usr/local/bin/ocpasswd >> /etc/sudoers
 
-    echo www-data ALL = NOPASSWD: /usr/bin/occtl >> /etc/sudoers
+    echo www-data ALL = NOPASSWD: /usr/local/bin/occtl >> /etc/sudoers
     
     echo www-data ALL = NOPASSWD: /usr/bin/systemctl restart ocserv.service >> /etc/sudoers
     
@@ -313,12 +313,12 @@ PRO_SERVICES() {
     
 }
 
-Config_Variable
-Print_Variable
-Install_Ocserv
-Config_Ocserv
-Config_Firewall
-Config_System
+#Config_Variable
+#Print_Variable
+#Install_Ocserv
+#Config_Ocserv
+#Config_Firewall
+#Config_System
 INSTALL_PANNEL_Env
 PRO_DIR
 PRO_VENV
