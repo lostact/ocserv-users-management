@@ -128,7 +128,7 @@ class AddUser(View):
             username = form.cleaned_data.get("oc_username")
             password = form.cleaned_data.get("oc_password")
             form.save()
-            command = f'/usr/bin/echo -e "{password}\n{password}\n"|sudo /usr/bin/ocpasswd -c /etc/ocserv/ocpasswd {username}'
+            command = f'/usr/bin/echo -e "{password}\n{password}\n"|sudo /usr/local/bin/ocpasswd -c /etc/ocserv/ocpasswd {username}'
             os.system(command)
             context = {
                 'form' : AddUserForm,
@@ -150,7 +150,7 @@ class DelUser(View):
         if request.is_ajax :
             user_id = (request.GET.get("user_id", None)).strip()
             obj = OcservUser.objects.get(id=user_id)
-            command = f'sudo /usr/bin/ocpasswd  -c /etc/ocserv/ocpasswd -d {obj.oc_username}'
+            command = f'sudo /usr/local/bin/ocpasswd  -c /etc/ocserv/ocpasswd -d {obj.oc_username}'
             os.system(command)
             obj.delete()
             return JsonResponse({}, status=200)
@@ -166,11 +166,11 @@ class HandlerUser(View):
             obj = OcservUser.objects.get(id=user_id)
             if action == 'active':
                 obj.oc_active = True
-                command = f'sudo /usr/bin/ocpasswd  -c /etc/ocserv/ocpasswd -u {obj.oc_username}'
+                command = f'sudo /usr/local/bin/ocpasswd  -c /etc/ocserv/ocpasswd -u {obj.oc_username}'
                 os.system(command)
             else:
                 obj.oc_active = False
-                command = f'sudo /usr/bin/ocpasswd  -c /etc/ocserv/ocpasswd -l {obj.oc_username}'
+                command = f'sudo /usr/local/bin/ocpasswd  -c /etc/ocserv/ocpasswd -l {obj.oc_username}'
                 os.system(command)
             obj.save()
             return JsonResponse({}, status=200)
