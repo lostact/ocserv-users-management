@@ -18,6 +18,13 @@ from.models import *
 from .forms import *
 from .decorators import *
 
+import random, string
+
+def get_random_string(length):
+    # With combination of lower and upper case
+    return ''.join(random.choice(string.ascii_letters) for i in range(length))
+    # print random string
+
 @method_decorator(ratelimit(key='ip', rate='10/d'), name='dispatch')
 @method_decorator(reCAPTCHA, name='post')
 class Login(View):
@@ -117,7 +124,7 @@ class AddUser(View):
 
     def get(self, request, *args, **kwargs):
         context = {
-            'form' : AddUserForm,
+            'form' : AddUserForm(initial={'oc_password': get_random_string(5), 'expire_date': timezone.now() +  timezone.timedelta(days=30)}),
             'last_users' : OcservUser.objects.all().order_by("-create")[:7],
         }
         return render(request, self.template_name, context)
@@ -133,6 +140,8 @@ class AddUser(View):
             context = {
                 'form' : AddUserForm,
                 'success' : username,
+                'username' : username,
+                'password' : password,
             }
         else:
             context = {
