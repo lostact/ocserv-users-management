@@ -224,7 +224,7 @@ Config_System() {
 
 INSTALL_PANNEL_Env() {
      echo -e "\e[0;36m"Installing Pannel Environment..."\e[0m"
-    apt install python3 python3-pip virtualenv build-essential python3-dev nginx git -y
+    apt install python3 python3-pip virtualenv build-essential python3-dev nginx git uwsgi-plugin-python3 -y
     if [    "$?" = "0" ];then
         echo -e "\e[0;32m"Environment Installation Was Successful."\e[0m"
     else
