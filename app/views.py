@@ -135,7 +135,7 @@ class AddUser(View):
             username = form.cleaned_data.get("oc_username")
             password = form.cleaned_data.get("oc_password")
             form.save()
-            command = f'/usr/bin/echo -e "{password}\n{password}\n"|sudo /usr/local/bin/ocpasswd -c /etc/ocserv/ocpasswd {username}'
+            command = f'/bin/echo -e "{password}\n{password}\n"|sudo /usr/local/bin/ocpasswd -c /etc/ocserv/ocpasswd {username}'
             os.system(command)
             context = {
                 'form' : AddUserForm(initial={'oc_password': get_random_string(5), 'expire_date': timezone.now() +  timezone.timedelta(days=30)}),
