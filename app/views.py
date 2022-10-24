@@ -22,7 +22,7 @@ import random, string
 
 def get_random_string(length):
     # With combination of lower and upper case
-    return ''.join(random.choice(string.ascii_letters) for i in range(length))
+    return ''.join(random.choice(string.ascii_lowercase) for i in range(length))
     # print random string
 
 @method_decorator(ratelimit(key='ip', rate='10/d'), name='dispatch')
