@@ -93,6 +93,8 @@
                     onclick="confirmDelete('{{ user.id }}')" id="confirm-{{ user.id }}">Delete</button>
                 <button class="btn btn-outline-light btn-sm mx-1" style="display: none;"
                     onclick="cancelDelete('{{ user.id }}')" id="cancel-{{ user.id }}">Cancel</button>
+                <button class="btn btn-outline-success btn-sm" onclick="location.href='/edit_user?user_id={{ user.id }}';"
+                    id="del-{{ user.id }}">Edit</button>
             </td>
         </tr>
         {% endfor %}

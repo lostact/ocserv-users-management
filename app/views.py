@@ -139,7 +139,6 @@ class AddUser(View):
             os.system(command)
             context = {
                 'form' : AddUserForm(initial={'oc_password': get_random_string(5), 'expire_date': timezone.now() +  timezone.timedelta(days=30)}),
-                'success' : username,
                 'username' : username,
                 'password' : password,
             }
@@ -151,6 +150,44 @@ class AddUser(View):
         context['last_users'] = OcservUser.objects.all().order_by("-create")[:7]
         return render(request, self.template_name, context)
 
+@method_decorator(login_required, name='dispatch')
+class EditUser(View):
+    template_name = "add_user.html"
+
+    def get(self, request, *args, **kwargs):
+        user_id = (request.GET.get("user_id", None)).strip()
+        user = OcservUser.objects.get(id=user_id)
+        username = user.oc_username
+        password = user.oc_password
+        # is_active = user.oc_active
+        expire_date = user.expire_date.strftime("%Y-%m-%d") if user.expire_date else None
+        desc = user.desc
+        context = {
+            'form' : AddUserForm(initial={'oc_username': username, 'oc_password': password, 'expire_date': expire_date}),
+            'last_users' : OcservUser.objects.all().order_by("-create")[:7],
+            'user_id' : user_id,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        user_id = request.POST.get('user_id')
+        user = OcservUser.objects.get(id=user_id)
+        form = EditUserForm(request.POST, instance = user)
+        if form.is_valid():
+            user.save()
+            # form.save()
+            context = {
+                'form' : EditUserForm(initial={'oc_username': user.oc_username, 'oc_password': user.oc_password, 'expire_date': user.expire_date, 'desc': user.desc}),
+                'username' : user.oc_username,
+                'password' :  user.oc_password,
+            }
+        else:
+            context = {
+                'form' : form,
+                'error' : True,
+            }
+        context['last_users'] = OcservUser.objects.all().order_by("-create")[:7]
+        return render(request, self.template_name, context)
 
 @method_decorator(login_required, name='dispatch')
 class DelUser(View):
