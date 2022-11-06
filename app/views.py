@@ -139,6 +139,7 @@ class AddUser(View):
             os.system(command)
             context = {
                 'form' : AddUserForm(initial={'oc_password': get_random_string(5), 'expire_date': timezone.now() +  timezone.timedelta(days=30)}),
+                'success' : True,
                 'username' : username,
                 'password' : password,
             }
