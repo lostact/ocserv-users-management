@@ -16,7 +16,7 @@ class Command(BaseCommand):
             if user.expire:
                 try :
                     user.oc_active = False
-                    command = f'sudo /usr/bin/ocpasswd  -c /etc/ocserv/ocpasswd -l {user.oc_username}'
+                    command = f'sudo /usr/local/bin/ocpasswd  -c /etc/ocserv/ocpasswd -l {user.oc_username}'
                     os.system(command)
                     user.save()
                     self.stdout.write(self.style.SUCCESS(f'ocserv user {user.oc_username} deactivate with success'))
