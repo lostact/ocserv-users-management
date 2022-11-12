@@ -175,8 +175,12 @@ class EditUser(View):
         user = OcservUser.objects.get(id=user_id)
         form = EditUserForm(request.POST, instance = user)
         if form.is_valid():
+            username = form.cleaned_data.get("oc_username")
+            password = form.cleaned_data.get("oc_password")
             user.save()
-            # form.save()
+            if (password != 'OCSERV_HASH_PASSWORD'):
+                command = f'/bin/echo -e "{password}\n{password}\n"|sudo /usr/local/bin/ocpasswd -c /etc/ocserv/ocpasswd {username}'
+                os.system(command)
             context = {
                 'form' : EditUserForm(initial={'oc_username': user.oc_username, 'oc_password': user.oc_password, 'expire_date': user.expire_date, 'desc': user.desc}),
                 'username' : user.oc_username,
